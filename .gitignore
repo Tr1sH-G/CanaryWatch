@@ -1,0 +1,10 @@
+# Ignore the virtual environment
+bin/
+lib/
+include/
+pyvenv.cfg
+share/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
