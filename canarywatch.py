@@ -18,15 +18,13 @@ FAN_MOVED_TO = 0x00000080
 FAN_ATTRIB = 0x00000004
 
 
-# Trap files
-
+# Mark the trap file location
 trap_files = [
 
     "/home/canarywatch/Desktop/Passwords.txt",
     "/home/canarywatch/Documents/WatchThis.txt",
     "/var/.aa.pdf"
 ]
-
 
 # Load the standard Linux C library
 libc = ctypes.CDLL("libc.so.6")
@@ -43,14 +41,14 @@ class FanotifyEventMetadata(ctypes.Structure):
     ]
 
 def start_trap(trap_files):
-    # 1. Initialize Fanotify (The Gatekeeper)
+    # Initialize Fanotify (The Gatekeeper)
     # This returns a "File Descriptor" (fd) which is our handle on the kernel
     fd = libc.fanotify_init(FAN_CLASS_CONTENT, os.O_RDONLY)
     if fd < 0:
         print("Error: Could not initialize fanotify. Are you running as sudo?")
         return
 
-    # 2. Mark the bait file
+    # Mark the bait file
     # We tell the kernel: "Watch this path for Open-Permission events"
     for path in trap_files:
         if libc.fanotify_mark(fd, FAN_MARK_ADD, FAN_OPEN_PERM, -100, path.encode()) < 0:
@@ -61,33 +59,14 @@ def start_trap(trap_files):
 
     try:
         while True:
-            # 3. Read the event from the kernel
+            # Read the event from the kernel
             buf = os.read(fd, 4096)
             if not buf:
                 break
             
             # Unpack the metadata (length of the metadata struct is 24 bytes)
             metadata = FanotifyEventMetadata.from_buffer_copy(buf[:24])
-            
-            # if metadata.mask & FAN_OPEN_PERM:
-            #     attacker_pid = metadata.pid
-            #     print(f"INTRUDER! PID {attacker_pid} tried to open the file.")
-                
-            #     # 4. Neutralize the intruder
-            #     try:
-            #         os.kill(attacker_pid, signal.SIGKILL)
-            #         print(f"Target {attacker_pid} killed.")
-            #     except ProcessLookupError:
-            #         pass
-                
-            #     # 5. Tell the kernel to DENY access
-            #     # We send back a specific response structure
-            #     response = struct.pack("iI", metadata.fd, FAN_DENY)
-            #     os.write(fd, response)
-                
-            #     # Close the file descriptor the kernel created for the event
-            #     os.close(metadata.fd)
-            
+                                    
             # Assuming you found the hex value for FAN_MOVE (0x000000C0)
             # and FAN_EVENT_ON_CHILD (0x08000000)
 
