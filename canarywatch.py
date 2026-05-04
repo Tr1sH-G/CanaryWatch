@@ -23,7 +23,8 @@ FAN_ATTRIB = 0x00000004
 trap_files = [
 
     "/home/canarywatch/Desktop/Passwords.txt",
-    "/home/canarywatch/Documents/WatchThis.txt"
+    "/home/canarywatch/Documents/WatchThis.txt",
+    "/var/.aa.pdf"
 ]
 
 
