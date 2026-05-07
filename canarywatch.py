@@ -21,9 +21,13 @@ FAN_ATTRIB = 0x00000004
 # Mark the trap file location
 trap_files = [
 
-    "/home/canarywatch/Desktop/Passwords.txt",
-    "/home/canarywatch/Documents/WatchThis.txt",
-    "/var/.aa.pdf"
+    "/home/canarywatch/Desktop",
+    "/home/canarywatch/Documents",
+    "/home/canarywatch/Pictures",
+    "/var",
+    "/bin",
+    "/usr",
+    "/sbin"
 ]
 
 # Load the standard Linux C library
