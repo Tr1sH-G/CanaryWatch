@@ -1,3 +1,5 @@
+#!/home/canarywatch/CanaryWatch/bin
+
 import os
 
 # List of directories where files will be created
