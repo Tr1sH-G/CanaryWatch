@@ -6,7 +6,7 @@ import struct
 import signal
 
 # --- Linux Kernel Constants ---
-# These are the "secret codes" the kernel uses to understand what we want
+# These are the codes the kernel uses to understand what we want
 FAN_CLASS_CONTENT = 0x00000004
 FAN_MARK_ADD = 0x00000001
 FAN_OPEN_PERM = 0x00010000
@@ -17,7 +17,9 @@ FAN_MODIFY = 0x00000002
 FAN_ACCESS_PERM = 0x00020000
 FAN_MOVED_FROM = 0x00000040
 FAN_MOVED_TO = 0x00000080
+FAN_MOVE = 0x000000C0
 FAN_ATTRIB = 0x00000004
+
 
 
 # Mark the trap file location
@@ -73,8 +75,6 @@ def start_trap(trap_files):
             # Unpack the metadata (length of the metadata struct is 24 bytes)
             metadata = FanotifyEventMetadata.from_buffer_copy(buf[:24])
                                     
-            # Assuming you found the hex value for FAN_MOVE (0x000000C0)
-            # and FAN_EVENT_ON_CHILD (0x08000000)
 
             if metadata.mask & FAN_OPEN_PERM:
                 # --- BLOCKING LOGIC ---
@@ -91,7 +91,7 @@ def start_trap(trap_files):
                 os.write(fd, response)
                 os.close(metadata.fd)
 
-            elif metadata.mask & 0x000000C0: # This is FAN_MOVE
+            elif metadata.mask & FAN_MOVE:
                 # --- RETALIATORY LOGIC ---
                 attacker_pid = metadata.pid
                 print(f"ALARM (REACTION): PID {attacker_pid} just renamed/moved a file!")
@@ -111,6 +111,6 @@ def start_trap(trap_files):
         os.close(fd)
 
 if __name__ == "__main__":
-    # Ensure this file exists before running!
+    # Ensure the trap files exist before running!
     target = trap_files
     start_trap(target)

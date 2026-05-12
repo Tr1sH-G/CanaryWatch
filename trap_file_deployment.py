@@ -4,6 +4,7 @@ import os
 
 # List of directories where files will be created
 directories = [
+    
     "/home/canarywatch/Desktop",
     "/home/canarywatch/Documents",
     "/home/canarywatch/Pictures",
