@@ -12,7 +12,7 @@ There are currently two scripts:
 **canarywatch.py** does the heavy lifting by monitoring for any activity on the deployed trap files then killing the offending process.
 
 
-**NOTE:** *If you update the directories and/or the trap file name in trap_file_deployment.py, you must make sure that this detail is reflected in `canarywatch.py`*
+**NOTE:** *If you update the directories and/or the trap file name in `trap_file_deployment.py`, you must make sure that this detail is reflected in `canarywatch.py`*
 
 In most cases, a response action should be triggered by the presence of events utilising Open-Permissions, however if the ransomware does not open the files to encrypt initially, CanaryWatch will attempt to retroactively identify process data where there has been a rename event against the trap file. This does mean there will be at least one sacrificial file in this instance.
 
